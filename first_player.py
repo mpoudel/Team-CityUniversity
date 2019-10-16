@@ -1,10 +1,19 @@
+##Author Marvin G.
+##Name: first_player.py
+##Date: 15 OCT 2019
+##Description 
+
 #Need to choose who plays first, that person will be X. Second player will be 0. Need to set the global
 #state to show that there is no player one yet.
+
+##----------------------------Imported Modules?---------------------------------##
 #need to import random function in order to allow for the computer and the magic number to roll
 import random
 #the math function is needed to evaluate the absolute value
 import math
 
+
+##---------------------------Global variable delcarations-------------------------##
 #On initialization there is no first player chosen, so the value is set to false
 first_player_chosen= False
 #on init the CPU does not have a value, therefore it is set to 0
@@ -20,6 +29,7 @@ cpu_comparitor = abs( cpu_number - magic_number)
 
 player_goes_first = False
 
+##-----------------------------Function Definitions--------------------------------##
 
 def player_choice():
     #access to the players inputted value
@@ -110,7 +120,16 @@ def who_is_first():
 
     #winner is evaluated
         the_result()
-    
+
+
+
+##--------------Run the program--------------------------##
 who_is_first()
+
+
+##---------------Test Statements-------------------------##
 print("First player chosen: ", first_player_chosen)
 
+##
+##
+##
