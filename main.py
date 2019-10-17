@@ -20,6 +20,18 @@ board = ["-","-","-",
 
 
 # Shows the board
+
+# board
+#display board
+# play game
+# create ai
+#handle turn
+    #check rows
+    #check colmn
+    #check diagonals
+#check tie
+#flip player
+
 def display_board():
     print(board[0] + " | " + board[1] + "  |  " + board[2] + "  |  ")
     print(board[3] + " | " + board[4] + "  |  " + board[5] + "  |  ")
