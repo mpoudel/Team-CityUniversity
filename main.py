@@ -53,8 +53,15 @@ def play_game():
 
 #Handle a single turn of an arbitrary player
 def handle_turn(current_player):
+
     position = input("Choose a position from 1 to 9: ")
-    position = int(position) - 1 
+
+    # Warns the player if it enters number not between 1-9
+    
+    while position not in ['1' , '2' , '3', '4', '5', '6', '7', '8', '9']:
+            print('Enter a Valid Number between 1 to 9. Try again')
+            position = input("Choose a position from 1 to 9: ")       
+    position = int(position) - 1
 
     board[position] = current_player
 
