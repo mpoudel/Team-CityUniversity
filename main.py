@@ -185,7 +185,7 @@ def minimax(cur_board, cur_play, player1, player2):
             return (-1, None)
 
     move = -1
-    score = -1
+    score = -2
     available_moves = empty_cells(cur_board)
     for i in range(len(available_moves)):
         board_with_new_move = copy.deepcopy(cur_board)
@@ -195,7 +195,7 @@ def minimax(cur_board, cur_play, player1, player2):
             score = score_for_the_move
             move = available_moves[i]
     if move == -1:
-        return (0,0)
+        return (0,-2)
     return (score, move)
 
     
