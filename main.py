@@ -32,7 +32,6 @@ def play_game(cur_board, cur_play, play1, play2):
 
         display_board(cur_board)
         print("\n===============================================\n")
-        print(empty_cells(cur_board))
         #check if the game has ended
         gameover = check_if_game_over(cur_board)
         if gameover:
@@ -174,9 +173,9 @@ def ai_turn(cur_board, cur_play, play1, play2):
     print("AI TURN")
     play1_copy = copy.deepcopy(play1)
     play2_copy = copy.deepcopy(play2)
-    return minimax(cur_board, cur_play, play1_copy, play2_copy)[1]
+    return minimax(cur_board, cur_play, play1_copy, play2_copy, {})[1]
     
-def minimax(cur_board, cur_play, player1, player2):
+def minimax(cur_board, cur_play, player1, player2, memo):
     potential_win = check_for_winner(cur_board)
     if potential_win:
         if potential_win == cur_play[0]:
@@ -190,7 +189,11 @@ def minimax(cur_board, cur_play, player1, player2):
     for i in range(len(available_moves)):
         board_with_new_move = copy.deepcopy(cur_board)
         board_with_new_move[available_moves[i]] = cur_play[0]
-        score_for_the_move = -minimax(board_with_new_move, flip_player(cur_play, player1, player2), player1, player2)[0]
+        if str(board_with_new_move) in memo.keys():
+            score_for_the_move = memo[str(board_with_new_move)]
+        else:
+            score_for_the_move = -minimax(board_with_new_move, flip_player(cur_play, player1, player2), player1, player2, memo)[0]
+            memo[str(board_with_new_move)] = score
         if score_for_the_move > score:
             score = score_for_the_move
             move = available_moves[i]
