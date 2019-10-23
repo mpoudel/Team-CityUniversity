@@ -175,7 +175,7 @@ def ai_turn(cur_board, cur_play, play1, play2):
     play2_copy = copy.deepcopy(play2)
     return minimax(cur_board, cur_play, play1_copy, play2_copy, {})[1]
     
-def minimax(cur_board, cur_play, player1, player2, memo):
+def minimax(cur_board, cur_play, player1, player2, memo = {}):
     potential_win = check_for_winner(cur_board)
     if potential_win:
         if potential_win == cur_play[0]:
