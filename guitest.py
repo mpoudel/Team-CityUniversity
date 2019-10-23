@@ -11,18 +11,19 @@ cur_play = player1
 scores = { "X": 0, "O": 0 }
 
 window = Tk()
+x_score = tkinter.StringVar()
+o_score = tkinter.StringVar()
+x_score = 0
+o_score = 0
 window.title("Tic Tac Toe")
-window.geometry("100x200")
+window.geometry("400x200")
 
 v = StringVar()
 Label(window, textvariable=v,pady=10).pack()
 v.set("Tic Tac Toe")
-x_score = StringVar()
-o_score = StringVar()
-xlabel = Label(window, text="X score: ", textvariable = x_score).pack(side="bottom")
-olabel = Label(window, text="O score: ", textvariable = o_score).pack(side="bottom")
 
 btn=[]
+scores = {}
 class FirstPlayerDialog:
     def __init__(self, parent):
 
@@ -48,7 +49,10 @@ class FirstPlayerDialog:
         computer_guess = test_against - computer_guess
         player_guess = test_against - player_guess
         if abs(computer_guess) < abs(player_guess):
-            cur_play = flip_player(cur_play, player1, player2)
+            temp = player2
+            player2 = player1
+            player1 = temp
+            cur_play = player1
             print("CPU is first player")
             return
         else:
@@ -70,11 +74,24 @@ class BoardButton():
     def callPlayMove(self):
         PlayMove(self.position)
 
+def ScoreFrame(parent):
+    global x_score
+    global o_score
+    frame = Frame(parent)
+    frame.pack(side="bottom")
+    x_label = Label(frame, text="X score: ").pack(side="top")
+    o_label = Label(frame, text="O score: ").pack(side="bottom")
+    x_score_value = Label(x_label, textvariable=x_score).pack(side="right")
+    o_score_value = Label(frame, textvariable=o_score).pack(side="right")
+
+
 def DrawBoard():
     global BoardValue
     global cur_play
     global player1
     global player2
+    global x_score
+    global o_score
     if ai_on:
         ai_move()
     for i, b in enumerate(BoardValue):
@@ -83,6 +100,7 @@ def DrawBoard():
             row_frame = Frame(window)
             row_frame.pack(side="top")
         BoardButton(row_frame,b)
+    ScoreFrame(window)
         #btn.append(Button(row_frame, text=b, relief=GROOVE, width=2))
         #btn[i].pack(side="left")
 
@@ -100,6 +118,7 @@ def UpdateBoard():
     for i, b in enumerate(BoardValue):
         global btn
         btn[i].config(text=b)
+    window.update_idletasks
 
 def PlayMove(positionClicked):
     global BoardValue
@@ -107,10 +126,13 @@ def PlayMove(positionClicked):
     global player1
     global player2
     global ai_on
+    global scores
+    global x_score
+    global o_score
     if BoardValue[positionClicked] == '-':
         BoardValue[positionClicked] = cur_play[0]
         cur_play = flip_player(cur_play, player1, player2)
-        if ai_on:
+        if ai_on and not check_for_winner(BoardValue) and not check_if_tie(BoardValue):
             ai_move()
             UpdateBoard()
     else:
@@ -125,6 +147,7 @@ def PlayMove(positionClicked):
             o_score = scores["O"]
             BoardValue = ["-","-","-","-","-","-","-","-","-"]
             cur_play = player1
+            ##cur_play = flip_player(cur_play, player1, player2)
             ai_move()
             UpdateBoard()
 
@@ -134,12 +157,15 @@ def PlayMove(positionClicked):
         retry = tkinter.messagebox.askquestion("Tic Tac Toe", "Tie Game, play again?")
         if retry == 'yes':
             BoardValue = ["-","-","-","-","-","-","-","-","-"]
+            ##cur_play = flip_player(cur_play, player1, player2)
             cur_play = player1
             ai_move()
             UpdateBoard()
         else:
             window.destroy()
 dialog = FirstPlayerDialog(window)
+window.lift()
+window.attributes("-topmost", True)
 window.wait_window(dialog.top)
 DrawBoard()
 window.mainloop()
