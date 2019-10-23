@@ -29,7 +29,7 @@ class FirstPlayerDialog:
         top = self.top = Toplevel(parent)
         Label(top, text="Pick a number between 1 and 100 to see who goes first").pack()
         b = Button(top, text ="OK", command=self.ok)
-        b.pack(pady=5)
+        b.pack(pady=5, side="bottom")
         self.e = Entry(top)
         self.e.pack(padx=5)
     def validate_player_guess(self, guess):
@@ -48,9 +48,11 @@ class FirstPlayerDialog:
         computer_guess = test_against - computer_guess
         player_guess = test_against - player_guess
         if abs(computer_guess) < abs(player_guess):
-            flip_player(cur_play, player1, player2)
+            cur_play = flip_player(cur_play, player1, player2)
+            print("CPU is first player")
             return
         else:
+            print("Human is first player")
             return
     def ok(self):
 
