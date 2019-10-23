@@ -8,13 +8,16 @@ player1 = ("X", "human")
 player2 = ("O", "cpu")
 ai_on = True
 cur_play = player1
-scores = { "X": 0, "O": 0 }
-
+scores = dict()
+scores["X"] = 0
+scores["O"] = 0
+print(scores)
 window = Tk()
+
 x_score = tkinter.StringVar()
 o_score = tkinter.StringVar()
-x_score = 0
-o_score = 0
+x_score.set(str(0))
+o_score.set(str(0))
 window.title("Tic Tac Toe")
 window.geometry("400x200")
 
@@ -23,7 +26,6 @@ Label(window, textvariable=v,pady=10).pack()
 v.set("Tic Tac Toe")
 
 btn=[]
-scores = {}
 class FirstPlayerDialog:
     def __init__(self, parent):
 
@@ -72,17 +74,20 @@ class BoardButton():
         btn[self.position].pack(side="left")
 
     def callPlayMove(self):
+        global scores
         PlayMove(self.position)
 
 def ScoreFrame(parent):
     global x_score
     global o_score
-    frame = Frame(parent)
-    frame.pack(side="bottom")
-    x_label = Label(frame, text="X score: ").pack(side="top")
-    o_label = Label(frame, text="O score: ").pack(side="bottom")
-    x_score_value = Label(x_label, textvariable=x_score).pack(side="right")
-    o_score_value = Label(frame, textvariable=o_score).pack(side="right")
+    xframe = Frame(parent)
+    oframe = Frame(parent)
+    xframe.pack(side="bottom")
+    oframe.pack(side="bottom")
+    x_label = Label(xframe, text="X score: ").pack(side="left")
+    o_label = Label(oframe, text="O score: ").pack(side="left")
+    x_score_value = Label(xframe, textvariable=x_score).pack(side="right")
+    o_score_value = Label(oframe, textvariable=o_score).pack(side="right")
 
 
 def DrawBoard():
@@ -126,9 +131,9 @@ def PlayMove(positionClicked):
     global player1
     global player2
     global ai_on
-    global scores
     global x_score
     global o_score
+    global scores
     if BoardValue[positionClicked] == '-':
         BoardValue[positionClicked] = cur_play[0]
         cur_play = flip_player(cur_play, player1, player2)
@@ -140,16 +145,18 @@ def PlayMove(positionClicked):
     winner = check_for_winner(BoardValue)
     tie = check_if_tie(BoardValue)
     if winner:
+        scores[winner] += 1
+        x_score.set(str(scores["X"]))
+        o_score.set(str(scores["O"]))
+        print(scores)
         retry = tkinter.messagebox.askquestion("Tic Tac Toe", winner + " Wins! Play again?")
         if retry == 'yes':
-            scores[winner] += 1
-            x_score = scores["X"]
-            o_score = scores["O"]
             BoardValue = ["-","-","-","-","-","-","-","-","-"]
             cur_play = player1
             ##cur_play = flip_player(cur_play, player1, player2)
             ai_move()
             UpdateBoard()
+            window.update()
 
         else:
             window.destroy()
