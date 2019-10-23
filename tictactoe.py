@@ -173,9 +173,9 @@ def ai_turn(cur_board, cur_play, play1, play2):
     print("AI TURN")
     play1_copy = copy.deepcopy(play1)
     play2_copy = copy.deepcopy(play2)
-    value = minimax(cur_board, cur_play, play1_copy, play2_copy, {})
-    return value[1]
-def minimax(cur_board, cur_play, player1, player2, memo):
+    return minimax(cur_board, cur_play, play1_copy, play2_copy, {})[1]
+    
+def minimax(cur_board, cur_play, player1, player2, memo = {}):
     potential_win = check_for_winner(cur_board)
     if potential_win:
         if potential_win == cur_play[0]:
@@ -189,17 +189,17 @@ def minimax(cur_board, cur_play, player1, player2, memo):
     for i in range(len(available_moves)):
         board_with_new_move = copy.deepcopy(cur_board)
         board_with_new_move[available_moves[i]] = cur_play[0]
-        if str(board_with_new_move) + cur_play[1]  in memo.keys():
-            score_for_the_move = memo[str(board_with_new_move) + cur_play[1]]
+        if str(board_with_new_move) in memo.keys():
+            score_for_the_move = memo[str(board_with_new_move)]
         else:
             score_for_the_move = -minimax(board_with_new_move, flip_player(cur_play, player1, player2), player1, player2, memo)[0]
         if score_for_the_move > score:
             score = score_for_the_move
-            memo[str(board_with_new_move) + cur_play[1]] = score
+            memo[str(board_with_new_move)] = score
             move = available_moves[i]
     if move == -1:
         return (0,-2)
-    return (score, move, memo)
+    return (score, move)
 
     
 
@@ -218,7 +218,7 @@ board = ["-","-","-",
          "-","-","-",
          "-","-","-"]
 
-play_game(board, first_player, player1, player2)
+##play_game(board, first_player, player1, player2)
 
 
 
