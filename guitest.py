@@ -140,6 +140,7 @@ def DrawBoard():
     
     if ai_on:
         ai_move()
+    UpdateBoard()
         #btn.append(Button(row_frame, text=b, relief=GROOVE, width=2))
         #btn[i].pack(side="left")
 def compatibility_flip_player(cur_play, player1, player2):
